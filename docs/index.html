@@ -54,16 +54,17 @@
 				camera.position.set( 0, 0, 0 );
                 camera.lookAt(0, 0, 0);
 				scene.add( camera );
-                const radii = [1.00, 1.032989, 1.0682288, 1.105958, 1.1464497, 1.1900191, 1.2370311, 1.2879103, 1.3431542,
-                            1.4033499, 1.4691943, 1.5415217, 1.6213388, 1.7098731, 1.8086348, 1.9195048, 2.0448549, 2.1877205, 2.3520486, 2.5430682,
-                            2.7678573, 3.0362391, 3.362256, 3.7667074, 4.281768, 4.96, 5.893536, 7.259953, 9.45122, 13.537117, 23.846151, 99.99995
-                ];
+				let radii = [];
                 const loader = new THREE.TextureLoader();
 
                 const spheres = [];
-                for (let i = 0; i < 32; i ++)
+                for (let i = 0; i < 48; i ++)
                 {
-                    const geometry = new THREE.SphereGeometry(radii[i], 32, 32);
+					let fraction = i / (48 - 1);
+					let linearValue = (1.0 - fraction) + (1.0 / 100.0) * fraction;
+					let radius = 1.0 / linearValue;
+					radii.push(radius);
+                    const geometry = new THREE.SphereGeometry( radii[i], 48, 48);
                     const textureName = "spheres/" + i.toString().padStart(2, '0') + '.png';
                     const texture = loader.load(textureName);
                     texture.encoding = THREE.sRGBEncoding;
@@ -80,7 +81,7 @@
                     const sphere = new THREE.Mesh(geometry, material);
 					//sphere.scale.set(radii[i], radii[i], radii[i]);
                     
-                    sphere.renderOrder = 31-i;
+                    sphere.renderOrder = 47-i;
 
                     scene.add(sphere);
                     spheres.push(sphere);
